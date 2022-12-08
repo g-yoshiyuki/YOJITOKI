@@ -1,0 +1,298 @@
+@charset "UTF-8";
+@use "../setting" as s;
+
+// モーダル//////////////
+.l-modal {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(56, 43, 41, 0.3);
+  // 背景スクロール禁止
+  overscroll-behavior: contain;
+  overflow-y: scroll;
+  z-index: 10;
+  &::before {
+    content: "";
+    width: 1px;
+    height: calc(100vh + 1px);
+    background: transparent;
+    display: block;
+  }
+  &.active {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .modal {
+    position: relative;
+    filter: drop-shadow(7px 7px 15px rgba(162, 146, 130, 0.4));
+    @include s.center;
+    background: s.$bg_ac;
+    width: 90%;
+    max-width: 400px;
+    padding: 50px 4%;
+    border-radius: 20px;
+    .close-btn {
+      position: absolute;
+      right: 4%;
+      top: 15px;
+      cursor: pointer;
+      font: {
+        size: 14px;
+      }
+      color: s.$ac;
+      a {
+        color: inherit;
+      }
+    }
+    .text {
+      display: block;
+      font-size: 18px;
+      font-weight: 500;
+      text-align: center;
+      letter-spacing: 0;
+      line-height: 1.5;
+      margin-bottom: 1em;
+      @include s.ssm {
+        font-size: 16px;
+      }
+    }
+    .c-btn {
+      margin-top: 25px;
+    }
+  }
+}
+
+// 商品一覧//////////////////
+.l-products {
+  border-bottom: 1px solid s.$border;
+  .c-btn {
+    margin-top: 60px;
+    @include s.ssm {
+      margin-top: 40px;
+    }
+  }
+}
+.products {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 50px 3%;
+  @include s.md {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @include s.sm {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px 4%;
+  }
+  &Item {
+    position: relative;
+    // お気に入り商品をホバー時にゴミ箱アイコンを表示させる
+    .deleteIcon {
+      position: absolute;
+      top: 5px;
+      right: 2%;
+      width: 20px;
+      z-index: 3;
+      opacity: 0.8;
+      cursor: pointer;
+      img {
+        transition: 0.2s;
+        filter: drop-shadow(0px 0px 2px s.$white);
+        filter: drop-shadow(1px 1px 2px s.$white);
+        filter: drop-shadow(-1px 1px 2px s.$white);
+        filter: drop-shadow(1px -1px 2px s.$white);
+        filter: drop-shadow(-1px -1px 2px s.$white);
+      }
+      &:hover {
+        img {
+          transform: scale(1.3);
+        }
+        & + a .productsItem__img {
+          &::before,
+          &::after {
+            display: none;
+          }
+          img {
+            filter: none;
+          }
+        }
+      }
+    }
+    &__img {
+      filter: drop-shadow(7px 7px 15px rgba(162, 146, 130, 0.3));
+      position: relative;
+      overflow: hidden;
+      &::before,
+      &::after {
+        display: block;
+        opacity: 0;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+      }
+      &::before {
+        content: "";
+        background: rgba(162, 146, 130, 0.5);
+        background: rgba(180, 154, 132, 0.3);
+        background: rgba(164, 130, 104, 0.2);
+        background: rgba(146, 87, 45, 0.3);
+        transition-duration: 0.2s;
+        z-index: 1;
+      }
+      &::after {
+        content: "VIEW MORE";
+        color: s.$white;
+        font: {
+          size: 18px;
+          weight: 500;
+          family: s.$f-en;
+        }
+        @include s.flex-center;
+        transition-duration: 0.2s;
+        letter-spacing: 0.1em;
+        z-index: 2;
+        @include s.ssm {
+          font-size: 16px;
+        }
+      }
+      span {
+        display: block !important;
+      }
+      img {
+        height: 160px !important;
+        object-fit: cover !important;
+
+        transition-duration: 0.2s;
+        @include s.md {
+          height: (160/992) * 100vw !important;
+        }
+        @include s.sm {
+          height: max((200/768) * 100vw, 100px) !important;
+        }
+      }
+    }
+    &__content {
+      .name {
+        display: block;
+        padding: 1.2em 0 0.5em;
+        font: {
+          size: 18px;
+          weight: 300;
+        }
+        @include s.ssm {
+          font-size: 15px;
+        }
+      }
+      .price {
+        color: s.$c-sub;
+        letter-spacing: 0.06em;
+      }
+    }
+    &:hover {
+      .productsItem__img {
+        &::before,
+        &::after {
+          opacity: 1;
+        }
+        // テキスト表示遅らせる
+        &::after {
+          transition-delay: 0.2s;
+        }
+        img {
+          filter: blur(3px);
+        }
+      }
+    }
+    &.soldout {
+      .price {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        &::after {
+          content: "SOLD OUT";
+          display: inline-block;
+          letter-spacing: 0;
+          font: {
+            size: 13px;
+            weight: 500;
+            family: s.$f-en;
+          }
+          background: s.$white;
+          border: 1px solid s.$c-text;
+          border-radius: 2px;
+          padding: 0.2em 0.68em;
+          color: s.$c-text;
+          @include s.ssm {
+            font-size: 11px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// カテゴリー/////////////
+.category {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 3%;
+  @include s.md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include s.sm {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  &Item {
+    filter: drop-shadow(7px 7px 15px rgba(162, 146, 130, 0.3));
+    a {
+      display: flex;
+      height: 85px;
+    }
+    &__img {
+      width: 35%;
+      height: 100%;
+      overflow: hidden;
+      span {
+        display: block !important;
+        height: 100% !important;
+      }
+      img {
+        object-fit: cover !important;
+        height: 100% !important;
+        transition: 0.7s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+    }
+    &__content {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      flex: 1;
+      padding: {
+        left: 6%;
+      }
+      background: s.$bg_ac;
+      .name {
+        font: {
+          weight: 500;
+        }
+        letter-spacing: 0;
+        transition: 0.4s;
+      }
+    }
+    &:hover {
+      img {
+        transform: scale(1.06, 1.06);
+      }
+      .name {
+        color: s.$ac;
+      }
+    }
+  }
+}

@@ -1,0 +1,80 @@
+@charset "UTF-8";
+@use "../setting" as s;
+.footer {
+  background: s.$bg3;
+  padding: 60px 0;
+  letter-spacing: 0.05em;
+  @include s.ssm {
+    padding: 40px 0;
+  }
+  .inner {
+    display: flex;
+    justify-content: space-between;
+    // align-items: center;
+    @include s.sm {
+      flex-direction: column-reverse;
+    }
+  }
+  &Left {
+    @include s.sm {
+      text-align: center;
+    }
+    &-logo {
+      display: block;
+      font: {
+        size: 34px;
+        weight: 400;
+        family: s.$f-en;
+      }
+      color: s.$white;
+      letter-spacing: 0.12em;
+      @include s.sm {
+        margin-top: 1em;
+      }
+      @include s.ssm {
+        font-size: 27px;
+      }
+    }
+    .copy {
+      display: block;
+      color: s.$white;
+      font: {
+        size: 10px;
+      }
+      margin-top: 15px;
+    }
+  }
+  &Right {
+    .l-sns {
+      display: flex;
+      align-items: center;
+      @include s.sm {
+        flex-direction: column;
+      }
+      .ttl {
+        color: s.$white;
+        display: block;
+        font: {
+          size: 13px;
+          family: s.$f-en;
+        }
+        @include s.sm {
+          margin-bottom: 0.7em;
+        }
+      }
+      .sns {
+        display: flex;
+        &-item {
+          width: 27px;
+          margin-left: 10px;
+          @include s.sm {
+            margin-left: 0;
+            &:not(:first-child) {
+              margin-left: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

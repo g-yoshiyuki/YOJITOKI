@@ -1,0 +1,238 @@
+@charset "UTF-8";
+@use "../setting" as s;
+
+.l-btn {
+  margin-top: 30px;
+  .c-btn {
+    margin-top: 0 !important;
+  }
+  button {
+    &:not(:last-child) {
+      margin-bottom: 15px;
+    }
+  }
+}
+.l-row-btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+  @include s.sm {
+    flex-direction: column-reverse;
+  }
+  @include s.ssm {
+    margin-top: 40px;
+  }
+  .c-btn {
+    margin: 0;
+    @include s.sm {
+      max-width: none;
+    }
+    &:last-child {
+      margin-left: 10px;
+      @include s.sm {
+        margin-left: 0;
+        margin-bottom: 15px;
+      }
+    }
+  }
+}
+.l-mypage .l-row-btn {
+  margin-top: 0;
+  padding: 30px 0;
+  @include s.sm {
+    flex-direction: row;
+  }
+  .c-btn {
+    @include s.sm {
+      max-width: 240px;
+    }
+    &:last-child {
+      @include s.sm {
+        margin-left: 10px;
+        margin-bottom: 0px;
+      }
+    }
+  }
+}
+.c-btn {
+  @include s.flex-center;
+  border: none;
+  width: 100%;
+  max-width: 240px;
+  margin: 0 auto;
+  height: 45px;
+  background: transparent;
+  background: s.$c-ttl;
+  border-radius: 6px;
+  color: s.$white;
+  letter-spacing: 0.1em;
+  font: {
+    size: 14px;
+    family: s.$f-en;
+  }
+  transition: 0.4s;
+  @include s.ssm {
+    font-size: 12px;
+  }
+  &:hover {
+    background: s.$ac;
+    cursor: pointer;
+  }
+  &.ja {
+    font: {
+      weight: 500;
+      family: s.$f-sans;
+    }
+    letter-spacing: 0em;
+    height: 55px;
+  }
+  &.reverse {
+    background: transparent;
+    border: 1px solid s.$c-text;
+    color: s.$c-text;
+    &:hover {
+      background: s.$white;
+    }
+  }
+  &.submit {
+    max-width: none;
+    margin-top: 0;
+    height: 50px;
+    background: s.$ac;
+    font: {
+      size: 18px;
+    }
+    @include s.ssm {
+      font-size: 16px;
+    }
+    &:hover {
+      background: #dc6816;
+      // background: #d06010;
+    }
+  }
+  .cart,
+  .favorite,
+  .mail,
+  .send,
+  .pencil,
+  .checkout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &::after {
+      content: "";
+      width: 17px;
+      height: 19px;
+      margin-left: 0.5em;
+    }
+  }
+  .cart {
+    &::after {
+      @include s.bg("ico_cart_white.svg");
+    }
+  }
+  .favorite {
+    &::after {
+      @include s.bg("ico_favorite.svg");
+    }
+  }
+  .mail {
+    &::after {
+      @include s.bg("ico_mail.svg");
+    }
+  }
+  .send {
+    &::after {
+      @include s.bg("ico_send.svg");
+    }
+  }
+  .pencil {
+    &::after {
+      @include s.bg("ico_pencil.svg");
+    }
+  }
+  .checkout {
+    &::after {
+      @include s.bg("ico_checkout.svg");
+      background-size: cover;
+      width: 21px;
+      height: 21px;
+    }
+  }
+}
+.sortButton {
+  border: none;
+  background: transparent;
+  border-bottom: 1px solid s.$border;
+  margin-bottom: 1.5em;
+  padding: {
+    left: 1em;
+    right: 1em;
+    bottom: 0.5em;
+  }
+  @include s.ssm {
+    font-size: 13px;
+  }
+}
+// 購入数選択////////////////
+.l-input--number {
+  display: flex;
+  align-items: center;
+  letter-spacing: 0;
+  label {
+    margin-right: 1em;
+    @include s.ssm {
+      font-size: 12px;
+    }
+  }
+  .input--number {
+    border: 1px solid s.$border;
+    // width: 70px;
+    width: 90px;
+    width: 85px;
+    height: 45px;
+    height: 40px;
+    background: s.$white;
+    display: flex;
+  }
+  .number {
+    text-align: center;
+    border: none;
+    height: 100%;
+    color: s.$c-text;
+    width: 16%;
+    width: 26%;
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+      -moz-appearance: textfield;
+    }
+  }
+  .decrement,
+  .increment {
+    border: none;
+    height: 100%;
+    background: s.$white;
+    color: s.$c-text;
+    width: 42%;
+    width: 37%;
+    opacity: 0.5;
+    font: {
+      size: 12px;
+    }
+  }
+}
+
+.c-input {
+  width: 100%;
+  height: 45px;
+  border: 1px solid s.$border;
+  border-radius: 4px;
+  transition: 0.3s;
+  padding: 0 1em;
+  &:focus {
+    border: 1px solid transparent;
+    filter: drop-shadow(0px 0px 6px rgba(162, 146, 130, 0.3));
+  }
+}

@@ -1,0 +1,93 @@
+@charset "UTF-8";
+@use "../setting" as s;
+
+// 余白///////////
+.c-pd {
+  padding: 90px 0;
+  @include s.ssm {
+    padding: 50px 0;
+  }
+}
+.c-pb {
+  padding-bottom: 90px;
+  border-bottom: 1px solid s.$border;
+  @include s.ssm {
+    padding-bottom: 50px;
+  }
+}
+.c-pb--foot {
+  padding-bottom: 130px;
+  @include s.ssm {
+    padding-bottom: 70px;
+  }
+}
+.mt60 {
+  margin-top: 60px;
+  @include s.ssm {
+    margin-top: 40px;
+  }
+}
+// レイアウト///////////
+.inner {
+  width: 90%;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+.l-alignRight {
+  display: flex;
+  justify-content: flex-end;
+}
+// テキストスタイル//////////
+.ib {
+  display: inline-block;
+}
+.bold {
+  font-weight: bold;
+}
+.strong {
+  font-weight: 600;
+}
+.underline {
+  text-decoration: underline;
+}
+.annotation {
+  margin-top: 1em;
+  letter-spacing: 0.04em;
+  span {
+    display: block;
+    font: {
+      size: 12px;
+    }
+    padding-left: 1em;
+    text-indent: -1em;
+    color: s.$c-sub;
+  }
+}
+.text-center {
+  text-align: center;
+}
+.accent {
+  color: s.$text_ac;
+}
+.l-totalAmount {
+  text-align: right;
+  margin-top: 30px;
+  .totalAmount {
+    display: inline-block;
+    padding-left: 1.2em;
+    border-bottom: 1px solid s.$border;
+  }
+  .label {
+    margin-right: .3em;
+  }
+  .price {
+    color: s.$ac;
+    font: {
+      size: 38px;
+    }
+    opacity: .7;
+    @include s.ssm {
+      font-size: 30px;
+    }
+  }
+}

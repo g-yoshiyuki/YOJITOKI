@@ -1,0 +1,94 @@
+@charset "UTF-8";
+
+/* ----------------------- */
+/* メディアクエリ（min-width)
+/* ----------------------- */
+
+@mixin min($min: 1366px) {
+  @media (min-width: ($min)) {
+    @content;
+  }
+}
+@mixin max($lg: 1366px) {
+  @media (max-width: ($lg)) {
+    @content;
+  }
+}
+@mixin lg($lg: 1280px) {
+  @media (max-width: ($lg)) {
+    @content;
+  }
+}
+@mixin md($md: 992px) {
+  @media (max-width: ($md)) {
+    @content;
+  }
+}
+@mixin sm($sm: 768px) {
+  @media (max-width: ($sm)) {
+    @content;
+  }
+}
+@mixin ssm($ssm: 576px) {
+  @media (max-width: ($ssm)) {
+    @content;
+  }
+}
+@mixin se($ssm: 420px) {
+  @media (max-width: ($ssm)) {
+    @content;
+  }
+}
+
+// ハンバガーに切り替えるタイミング（案件によって$hmの数値を変える）
+@mixin hm($hm: 1020px) {
+  @media (max-width: ($hm)) {
+    @content;
+  }
+}
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+@mixin column-center {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+@mixin row-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@mixin flex-row-center {
+  display: flex;
+  justify-content: center;
+}
+@mixin bg($fileName, $path: "../../public/img/") {
+  background-image: url($path + $fileName);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  @content;
+}
+@mixin bg_pass($fileName, $path: "../images/", $dir: "") {
+  background-image: url($path + $dir + $fileName);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  @content;
+}
+@mixin img($height, $md-height: $height) {
+  width: 100%;
+  height: $height;
+  -o-object-fit: cover;
+  object-fit: cover;
+  @include md {
+    height: $md-height;
+  }
+}

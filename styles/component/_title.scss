@@ -1,0 +1,124 @@
+@charset "UTF-8";
+@use "../setting" as s;
+
+.c-title {
+  font: {
+    size: 42px;
+    weight: 400;
+    family: s.$f-serif;
+  }
+  color: s.$c-ttl;
+  margin-bottom: 1.2em;
+  @include s.ssm {
+    font-size: 29px;
+  }
+  span {
+    font: {
+      // size: 14px;
+      size: 16px;
+      weight: 400;
+      family: s.$f-en;
+    }
+    color: s.$ac;
+    // letter-spacing: 0.07em;
+    letter-spacing: 0.06em;
+    margin: {
+      left: 0.9em;
+    }
+    @include s.ssm {
+      // font-size: 10px;
+      font-size: 12px;
+    }
+  }
+}
+.c-title--center {
+  text-align: center;
+  font: {
+    size: 31px;
+    weight: 400;
+    family: s.$f-serif;
+  }
+  color: s.$c-ttl;
+  margin-bottom: 1.4em;
+  @include s.ssm {
+    font-size: 24px;
+  }
+  span {
+    display: block;
+    font: {
+      size: 16px;
+      weight: 400;
+      family: s.$f-en;
+    }
+    letter-spacing: 0.07em;
+    margin-bottom: 0.5em;
+    color: s.$c-ttlSub;
+    @include s.ssm {
+      font-size: 12px;
+    }
+  }
+}
+.c-title--lower {
+  font-weight: 400;
+  .heading {
+    font: {
+      size: 48px;
+      family: s.$f-serif;
+    }
+    color: s.$c-ttl;
+    margin-right: 0.3em;
+    @include s.ssm {
+      font-size: 36px;
+    }
+  }
+  .cate {
+    display: inline-block;
+    margin-top: 1em;
+    color: s.$ac;
+    letter-spacing: 0;
+    font: {
+      size: 18px;
+      family: s.$f-en;
+    }
+    &.en {
+      letter-spacing: 0.06em;
+      font-size: 16px;
+      @include s.ssm {
+        font-size: 12px;
+      }
+    }
+    .strong {
+      margin: 0 0.2em;
+    }
+    @include s.ssm {
+      font-size: 15px;
+      display: block;
+    }
+  }
+}
+.c-title--single {
+  margin-bottom: 20px;
+  .label {
+    font: {
+      size: 14px;
+      weight: 400;
+    }
+    display: block;
+    color: s.$c-ttlSub;
+    margin-bottom: 0.5em;
+    @include s.ssm {
+      font-size: 13px;
+    }
+  }
+  .name {
+    font: {
+      size: 35px;
+      weight: 600;
+      family: s.$f-serif;
+    }
+    color: s.$c-ttl;
+    @include s.ssm {
+      font-size: 27px;
+    }
+  }
+}

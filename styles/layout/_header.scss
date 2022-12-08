@@ -1,0 +1,89 @@
+@charset "UTF-8";
+@use "../setting" as s;
+
+.l-header {
+  height: 75px;
+  @include s.ssm {
+    height: 63px;
+  }
+}
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  height: 75px;
+  @include s.ssm {
+    height: 63px;
+  }
+  .inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+  }
+  &-logo {
+    font: {
+      size: 27px;
+      weight: 400;
+      family: s.$f-en;
+    }
+    letter-spacing: 0.12em;
+    @include s.ssm {
+      // font-size: 20px;
+      font-size: 22px;
+    }
+  }
+  &-icons {
+    display: flex;
+    align-items: center;
+    li {
+      width: 25px;
+      cursor: pointer;
+      position: relative;
+      @include s.ssm {
+        width: 20px;
+      }
+      &:not(:last-child) {
+        margin-right: 25px;
+        @include s.ssm {
+          margin-right: 18px;
+        }
+      }
+    }
+  }
+  .cartCount {
+    @include s.flex-center;
+    width: 17px;
+    height: 17px;
+    border-radius: 50px;
+    background: s.$text_ac;
+    color: s.$white;
+    font: {
+      size: 11px;
+    }
+    @include s.row-center;
+    top: -5px;
+    transform: translateX(-50%) scale(0);
+    &.active {
+      transform: translateX(-50%) scale(1);
+    }
+    &.anima {
+      animation: cartAnima .7s forwards;
+    }
+  }
+
+
+  @keyframes cartAnima {
+    0% {
+      transform: translateX(-50%) scale(0);
+    }
+    50% {
+      transform: translateX(-50%) scale(1.5);
+    }
+    100% {
+      transform: translateX(-50%) scale(1);
+    }
+  }
+}

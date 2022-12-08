@@ -1,0 +1,160 @@
+
+@charset "UTF-8";
+@use '../setting' as s;
+
+/* ----------------------- */
+/*ログイン共通
+/* ----------------------- */
+.l-form {
+  width: 90%;
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 30px 0 90px;
+  @include s.ssm {
+    padding: 30px 0 50px;
+  }
+}
+.form {
+  margin-bottom: 25px;
+  &-item {
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+    label {
+      display: block;
+      font: {
+        family: s.$f-en;
+        weight: 400;
+      }
+      margin-bottom: 0.5em;
+    }
+    input {
+      width: 100%;
+      height: 45px;
+      border: 1px solid s.$border;
+      border-radius: 4px;
+      transition: 0.3s;
+      padding: 0 1em;
+      &:focus {
+        border: 1px solid transparent;
+        filter: drop-shadow(0px 0px 6px rgba(162, 146, 130, 0.3));
+      }
+    }
+    textarea {
+      width: 100%;
+      height: 70px;
+      padding: {
+        top: 10px;
+        bottom: 10px;
+      }
+      resize: none;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      transition: 0.2s;
+      &:hover {
+        border: 1px solid #000;
+      }
+    }
+  }
+  &.ja {
+    label {
+      font-family: s.$f-sans;
+      font-weight: 500;
+    }
+  }
+}
+/* ----------------------- */
+/*認証ページ
+/* ----------------------- */
+.formTitle {
+  font: {
+    size: 48px;
+    family: s.$f-en;
+    weight: 500;
+  }
+  letter-spacing: 0.12em;
+  display: block;
+  text-align: center;
+  margin-bottom: .6em;
+  color: s.$c-ttl;
+  @include s.ssm {
+    font-size: 34px;
+  }
+  // &.ja {
+  //   font: {
+  //     family: s.$f-serif;
+  //     size: 38px;
+  //   }
+  // }
+}
+
+.loginSupport {
+  display: flex;
+  justify-content: space-between;
+  margin-top: (25/16)*1em;
+  letter-spacing: 0;
+  @include s.ssm {
+    flex-direction: column;
+    align-items: center;
+  }
+  &-item {
+    cursor: pointer;
+    text-decoration: underline;
+    color: s.$c-sub;
+    @include s.ssm {
+      font-size: 15px;
+    }
+    &.new {
+      color: s.$ac;
+    }
+    &:last-child {
+      @include s.ssm {
+        margin-top: .7em;
+      }
+    }
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+// .loading {
+//   width: 100vw;
+//   height: 100vh;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   p {
+//     font-size: 34px;
+//     margin-top: -30px;
+//   }
+// }
+/* ----------------------- */
+/*マイページ
+/* ----------------------- */
+.memberInfo {
+  dl {
+    padding: (18/16)*1em .5em;
+    display: flex;
+    // letter-spacing: 0;
+    @include s.sm {
+      flex-direction: column;
+    }
+    &:not(:last-child) {
+      border-bottom: 1px solid s.$border;
+    }
+    dt {
+      font-weight: 500;
+      // color: s.$ac;
+      flex-basis: 30%;
+      @include s.sm {
+        margin-bottom: .5em;
+      }
+    }
+    dd {
+      color: s.$c-sub;
+    }
+  }
+}
+.l-orderHistory {
+  padding-top: 50px;
+}

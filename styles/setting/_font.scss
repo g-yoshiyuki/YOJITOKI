@@ -1,0 +1,79 @@
+@charset "UTF-8";
+/*------------------------------
+font-face
+------------------------------*/
+@font-face {
+    font-family: "NotoSansCJKjp";
+    src: url("../../public/font/NotoSansCJKjp-Regular.woff2") format("woff2");
+    src: url("../../public/font/NotoSansCJKjp-Regular.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: "NotoSansCJKjp";
+    src: url("../../public/font/NotoSansCJKjp-Medium.woff2") format("woff2");
+    src: url("../../public/font/NotoSansCJKjp-Medium.woff") format("woff");
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: "NotoSansCJKjp";
+    src: url("../../public/font/NotoSansCJKjp-Bold.woff2") format("woff2");
+    src: url("../../public/font/NotoSansCJKjp-Bold.woff") format("woff");
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: "NotoSerifJP";
+    src: url("../../public/font/NotoSerifJP-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: "NotoSerifJP";
+    src: url("../../public/font/NotoSerifJP-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+}
+@font-face {
+    font-family: "NotoSerifJP";
+    src: url("../../public/font/NotoSerifJP-SemiBold.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "YakuHanJP";
+    src: url("../../public/font/YakuHanJP-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "YakuHanJP";
+    src: url("../../public/font/YakuHanJP-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "YakuHanJP";
+    src: url("../../public/font/YakuHanJP-Bold.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+}
+@font-face {
+    font-family: "NunitoSans";
+    src: url("../../public/font/NunitoSans-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: "NunitoSans";
+    src: url("../../public/font/NunitoSans-SemiBold.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+}
+
+
+

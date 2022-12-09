@@ -1,26 +1,20 @@
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { Category } from "../components/Category";
-import { NextSeo } from "next-seo";
-import { archiveSEO } from "../constants/next-seo.config";
-import { InferGetStaticPropsType, GetStaticProps } from "next";
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Category } from '../components/Category';
+import { NextSeo } from 'next-seo';
+import { archiveSEO } from '../constants/next-seo.config';
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const products = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}api/products`
-  ).then((response) => response.json());
+  const products = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/products`).then((response) => response.json());
   return {
     props: {
       products,
     },
-    // revalidate: 1 * 60, // 1分
   };
 };
 
-const Archive: NextPage = ({
-  products,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Archive: NextPage = ({ products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <>
       <NextSeo {...archiveSEO} />
@@ -46,12 +40,7 @@ const Archive: NextPage = ({
                   <Link href={{ pathname: `/product/${product.id}` }}>
                     <a>
                       <div className="productsItem__img">
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          width={268.45}
-                          height={160}
-                        />
+                        <Image src={product.images[0]} alt={product.name} width={268.45} height={160} />
                       </div>
                       <div className="productsItem__content">
                         <span className="name">{product.name}</span>

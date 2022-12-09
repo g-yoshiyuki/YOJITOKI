@@ -1,30 +1,15 @@
-import { GetServerSideProps, NextPage } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { Category } from "../../components/Category";
-import { useRouter } from "next/router";
-import { categoriesData } from "../../constants/categoriesData";
-import { GetStaticPaths, GetStaticProps } from "next";
-import { NextSeo } from "next-seo";
-import { archiveSEO } from "../../constants/next-seo.config";
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const paths = categoriesData.map((categoryData) => ({
-//     params: {
-//       cate: categoryData.cate,
-//     },
-//   }));
-//   return { paths, fallback: false };
-// };
+import { GetServerSideProps, NextPage } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Category } from '../../components/Category';
+import { useRouter } from 'next/router';
+import { NextSeo } from 'next-seo';
+import { archiveSEO } from '../../constants/next-seo.config';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }: any) => {
   const cate = params.cate as string;
-  const products = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}api/products`
-  ).then((response) => response.json());
-  const filteringProduct = products.filter(
-    (product: any) => product.cate === cate
-  );
+  const products = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/products`).then((response) => response.json());
+  const filteringProduct = products.filter((product: any) => product.cate === cate);
   return {
     props: { filteringProduct },
   };
@@ -41,7 +26,7 @@ const Cate: NextPage = ({ filteringProduct }: any) => {
           <h2 className="c-title--lower">
             <span className="heading">商品一覧</span>
             <span className="cate">
-              ｢<span className="strong">{router.query?.name ?? ""}</span>｣の商品一覧
+              ｢<span className="strong">{router.query?.name ?? ''}</span>｣の商品一覧
             </span>
           </h2>
         </div>
@@ -60,12 +45,7 @@ const Cate: NextPage = ({ filteringProduct }: any) => {
                   <Link href={{ pathname: `/product/${product.id}` }}>
                     <a>
                       <div className="productsItem__img">
-                        <Image
-                          src={product.images[0]}
-                          width={268.45}
-                          height={160}
-                          alt=""
-                        />
+                        <Image src={product.images[0]} width={268.45} height={160} alt="" />
                       </div>
                       <div className="productsItem__content">
                         <span className="name">{product.name}</span>

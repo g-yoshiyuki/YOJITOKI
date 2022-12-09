@@ -1,34 +1,19 @@
-import { InferGetServerSidePropsType, NextPage } from "next";
-import { useState } from "react";
-import Image from "next/image";
-import { Category } from "../../components/Category";
-import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from "next";
-import { NextSeo } from "next-seo";
-import { productSEO } from "../../constants/next-seo.config";
-import { useShoppingCart } from "use-shopping-cart";
-import { LoginModal } from "../../components/LoginModal";
-import { loginModalState, userState, buttonClickState } from "../../lib/atoms";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { GetServerSideProps } from "next";
-
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const products = await fetch(
-//     `${process.env.NEXT_PUBLIC_BASE_URL}api/products`
-//   ).then((response) => response.json());
-//   const paths = products.map((product: any) => ({
-//     params: {
-//       // [product]にIDを入れる
-//       product: product.id,
-//     },
-//   }));
-//   return { paths, fallback: false };
-// };
+import { InferGetServerSidePropsType, NextPage } from 'next';
+import { useState } from 'react';
+import Image from 'next/image';
+import { Category } from '../../components/Category';
+import { NextSeo } from 'next-seo';
+import { productSEO } from '../../constants/next-seo.config';
+import { useShoppingCart } from 'use-shopping-cart';
+import { LoginModal } from '../../components/LoginModal';
+import { loginModalState, userState, buttonClickState } from '../../lib/atoms';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { GetServerSideProps } from 'next';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  // params.productには[product]のqueryが入る。
   const id = params!.product as string;
-  const products = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}api/products`
-  ).then((response) => response.json());
+  const products = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/products`).then((response) => response.json());
   const filteringProduct = products.filter((product: any) => product.id === id);
   return {
     props: { filteringProduct },
@@ -36,9 +21,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 // mapを使用していないため配列の0番目を指定
-const Product: NextPage = ({
-  filteringProduct,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const user = useRecoilValue(userState);
   const [quantity, setQuantity] = useState<number>(1);
   const setLoginModal = useSetRecoilState(loginModalState);
@@ -53,76 +36,24 @@ const Product: NextPage = ({
           <div className="single">
             <div className="gallery">
               <div className="galleryItem">
-                <input
-                  type="radio"
-                  id="img-1"
-                  defaultChecked
-                  name="gallery"
-                  className="galleryItem__selector"
-                />
-                <Image
-                  className="galleryItem__img"
-                  src={filteringProduct[0].images[0]}
-                  width={743.4}
-                  height={400}
-                  alt=""
-                />
+                <input type="radio" id="img-1" defaultChecked name="gallery" className="galleryItem__selector" />
+                <Image className="galleryItem__img" src={filteringProduct[0].images[0]} width={743.4} height={400} alt="" />
                 <label htmlFor="img-1" className="galleryItem__thumb">
-                  <Image
-                    src={filteringProduct[0].images[0]}
-                    width={237.88}
-                    height={120}
-                    className="thumb"
-                    alt=""
-                  />
+                  <Image src={filteringProduct[0].images[0]} width={237.88} height={120} className="thumb" alt="" />
                 </label>
               </div>
               <div className="galleryItem">
-                <input
-                  type="radio"
-                  id="img-2"
-                  name="gallery"
-                  className="galleryItem__selector"
-                />
-                <Image
-                  className="galleryItem__img"
-                  src={filteringProduct[0].thum1}
-                  width={743.4}
-                  height={400}
-                  alt=""
-                />
+                <input type="radio" id="img-2" name="gallery" className="galleryItem__selector" />
+                <Image className="galleryItem__img" src={filteringProduct[0].thum1} width={743.4} height={400} alt="" />
                 <label htmlFor="img-2" className="galleryItem__thumb">
-                  <Image
-                    src={filteringProduct[0].thum1}
-                    width={237.88}
-                    height={120}
-                    className="thumb"
-                    alt=""
-                  />
+                  <Image src={filteringProduct[0].thum1} width={237.88} height={120} className="thumb" alt="" />
                 </label>
               </div>
               <div className="galleryItem">
-                <input
-                  type="radio"
-                  id="img-3"
-                  name="gallery"
-                  className="galleryItem__selector"
-                />
-                <Image
-                  className="galleryItem__img"
-                  src={filteringProduct[0].thum2}
-                  width={743.4}
-                  height={400}
-                  alt=""
-                />
+                <input type="radio" id="img-3" name="gallery" className="galleryItem__selector" />
+                <Image className="galleryItem__img" src={filteringProduct[0].thum2} width={743.4} height={400} alt="" />
                 <label htmlFor="img-3" className="galleryItem__thumb">
-                  <Image
-                    src={filteringProduct[0].thum2}
-                    width={237.88}
-                    height={120}
-                    className="thumb"
-                    alt=""
-                  />
+                  <Image src={filteringProduct[0].thum2} width={237.88} height={120} className="thumb" alt="" />
                 </label>
               </div>
             </div>
@@ -135,22 +66,11 @@ const Product: NextPage = ({
                       <span className="name">{filteringProduct[0].name}</span>
                     </h2>
                     <div className="l-number">
-                      <span className="price">
-                        ￥{price.unit_amount.toLocaleString()}
-                      </span>
+                      <span className="price">￥{price.unit_amount.toLocaleString()}</span>
                       <div className="l-input--number">
                         <label htmlFor="number">購入数</label>
                         <div className="input--number">
-                          <input
-                            type="button"
-                            className="decrement"
-                            value="−"
-                            onClick={() =>
-                              setQuantity((quantity) =>
-                                quantity <= 1 ? 1 : quantity - 1
-                              )
-                            }
-                          />
+                          <input type="button" className="decrement" value="−" onClick={() => setQuantity((quantity) => (quantity <= 1 ? 1 : quantity - 1))} />
                           <input
                             type="number"
                             id="number"
@@ -209,25 +129,14 @@ const Product: NextPage = ({
                       </button>
                     </div>
                     <ul className="detail">
-                      <li className="detail-text">
-                        ■サイズ（高×幅）：72mm×88mm
-                      </li>
+                      <li className="detail-text">■サイズ（高×幅）：72mm×88mm</li>
                       <li className="detail-text">■重さ：186g</li>
                       <li className="detail-text">■容量：250cc</li>
                     </ul>
                     <p className="annotation">
-                      <span>
-                        {" "}
-                        ※商品は一点一点手作りのため、形・色・大きさ、模様、風合いなど異なります。{" "}
-                      </span>
-                      <span>
-                        {" "}
-                        ※釉薬のムラやピンホール（小さな穴）、焼ムラ、貫入など個体差が出ますので予めご了承の上でご購入をお願いします。{" "}
-                      </span>
-                      <span>
-                        {" "}
-                        ※ご利用の環境状況により、実際の画像の色と多少異なる場合がございます。{" "}
-                      </span>
+                      <span> ※商品は一点一点手作りのため、形・色・大きさ、模様、風合いなど異なります。 </span>
+                      <span> ※釉薬のムラやピンホール（小さな穴）、焼ムラ、貫入など個体差が出ますので予めご了承の上でご購入をお願いします。 </span>
+                      <span> ※ご利用の環境状況により、実際の画像の色と多少異なる場合がございます。 </span>
                     </p>
                   </div>
                 );

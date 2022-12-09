@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@use "../setting" as s;
+@use '../setting' as s;
 
 .l-kvAnima {
   position: relative;
@@ -11,6 +11,11 @@
     transform: scale(1.02);
     filter: blur(2px);
     transition: all 1.6s cubic-bezier(0.645, 0.045, 0.355, 1) 0s;
+
+    // アニメーションを実行したい場合は以下3行をコメントアウトする。
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
   }
   &.__anima {
     .kvAnima {

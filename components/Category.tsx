@@ -1,6 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
-import { categoriesData } from "../constants/categoriesData";
+import Link from 'next/link';
+import Image from 'next/image';
+import { categoriesData } from '../constants/categoriesData';
 
 export const Category = () => {
   return (
@@ -18,10 +18,7 @@ export const Category = () => {
             };
             return (
               <li className="categoryItem" key={categoryData.name}>
-                <Link
-                  href={{ pathname: categoryData.link, query: cateProps }}
-                  as={categoryData.link}
-                >
+                <Link href={{ pathname: categoryData.link, query: cateProps }} as={categoryData.link}>
                   <a>
                     <div className="categoryItem__img">
                       <Image src={categoryData.img} width={129.41} height={85} alt="" />

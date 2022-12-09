@@ -1,52 +1,37 @@
-import { useEffect, useRef } from "react";
-import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { Category } from "../components/Category";
-import { newsData } from "../constants/newsData";
-import { InferGetStaticPropsType, GetStaticProps } from "next";
+import { useEffect, useRef } from 'react';
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Category } from '../components/Category';
+import { newsData } from '../constants/newsData';
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const products = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}api/products`
-  ).then((response) => response.json());
+  const products = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/products`).then((response) => response.json());
   return {
     props: {
       products,
     },
-    // revalidate: 1 * 60, // 1分
   };
 };
 
-const Home: NextPage = ({
-  products,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Home: NextPage = ({ products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const selectProducts = products.slice(0, 8);
   const elm: any = useRef();
 
-  useEffect(() => {
-    elm.current.classList.add("__anima");
-  }, []);
+  // キービジアニメーション
+  // useEffect(() => {
+  //   window.onload = function() {
+  //     elm.current.classList.add('__anima');
+  //     }
+  // }, []);
 
   return (
     <>
       <main className="inner">
         <div className="l-hero l-kvAnima" id="js-anima" ref={elm}>
           <picture className="hero kvAnima">
-            <source
-              media="(min-width: 769px)"
-              srcSet="img/hero.jpg"
-              id="hero1"
-              width="2100"
-              height="860"
-            />
-            <source
-              media="(max-width: 768px)"
-              srcSet="img/hero_sp.jpg"
-              id="hero2"
-              width="675"
-              height="600"
-            />
+            <source media="(min-width: 769px)" srcSet="img/hero.jpg" id="hero1" width="2100" height="860" />
+            <source media="(max-width: 768px)" srcSet="img/hero_sp.jpg" id="hero2" width="675" height="600" />
             <img src="img/hero.jpg" alt="" width="2100" height="860" />
           </picture>
         </div>
@@ -61,12 +46,7 @@ const Home: NextPage = ({
                   <Link href={{ pathname: `/product/${product.id}` }}>
                     <a>
                       <div className="productsItem__img">
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          width={268.45}
-                          height={160}
-                        />
+                        <Image src={product.images[0]} alt={product.name} width={268.45} height={160} />
                       </div>
                       <div className="productsItem__content">
                         <span className="name">{product.name}</span>

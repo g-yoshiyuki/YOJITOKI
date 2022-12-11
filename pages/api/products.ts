@@ -45,6 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         thum1: product.metadata.thum1,
         thum2: product.metadata.thum2,
         thum3: product.metadata.thum3,
+        // 料金は複数設定されている可能性があるのでmapで展開する
         prices: prices.data.map((price) => {
           return {
             id: price.id,

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Category } from '../components/Category';
 import { NextSeo } from 'next-seo';
 import { archiveSEO } from '../constants/next-seo.config';
+import { useEffect, useState } from 'react';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const products = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/products`).then((response) => response.json());
@@ -15,6 +16,31 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const Archive: NextPage = ({ products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+
+  const [filter, setFilter] = useState<any>('update');
+  const [filteredProducts, setFilteredProducts] = useState<any>(products);
+
+  useEffect(() => {
+    const sortProducts = () => {
+      switch (filter) {
+        case 'height':
+          var cloneProducts = Array.from(products);
+          const sortLowArray = cloneProducts.sort((a: any, b: any) => Date.parse(b.prices[0].unit_amount) - Date.parse(a.prices[0].unit_amount));
+          setFilteredProducts(sortLowArray);
+          break;
+        case 'low':
+          var cloneProducts = Array.from(products);
+          const sortHeightArray = cloneProducts.sort((a: any, b: any) => Date.parse(a.prices[0].unit_amount) - Date.parse(b.prices[0].unit_amount));
+          setFilteredProducts(sortHeightArray);
+
+          break;
+        default:
+          setFilteredProducts(products);
+      }
+    };
+    sortProducts();
+  }, [filter]);
+
   return (
     <>
       <NextSeo {...archiveSEO} />
@@ -27,14 +53,14 @@ const Archive: NextPage = ({ products }: InferGetServerSidePropsType<typeof getS
         </div>
         <section className="l-products c-pb">
           <div className="l-alignRight">
-            <select className="sortButton">
+            <select className="sortButton" value={filter} onChange={(e) => setFilter(e.target.value)}>
               <option value="update">更新順</option>
               <option value="height">価格：高い順</option>
-              <option value="low">価格：安い順</option>
+              <option value="low">価格：低い順</option>
             </select>
           </div>
           <ul className="products">
-            {products.map((product: any) => {
+            {filteredProducts.map((product: any) => {
               return (
                 <li className="productsItem" key={product.id}>
                   <Link href={{ pathname: `/product/${product.id}` }}>

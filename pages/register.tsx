@@ -36,6 +36,7 @@ const Register: NextPage = () => {
         }
 
         // uidをdocumentIdにセットしてdocumentを作成
+        // docは参照先を指定しているだけ
         const documentRef = doc(db, 'users', authUser.user.uid);
         await setDoc(documentRef, {
           id: authUser.user.uid,

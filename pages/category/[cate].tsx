@@ -42,7 +42,7 @@ const Cate: NextPage = ({ categoryProducts }: any) => {
     sortProducts();
     // categoryProductsを監視することで
     // useStateのfilteredProductsが更新される
-  }, [filter,categoryProducts]);
+  }, [filter, categoryProducts]);
 
   return (
     <>

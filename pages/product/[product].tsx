@@ -1,5 +1,5 @@
 import { InferGetServerSidePropsType, NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Category } from '../../components/Category';
 import { NextSeo } from 'next-seo';
@@ -9,6 +9,8 @@ import { LoginModal } from '../../components/LoginModal';
 import { loginModalState, userState, buttonClickState } from '../../lib/atoms';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { GetServerSideProps } from 'next';
+import { db } from '../../lib/firebase';
+import { doc, setDoc } from 'firebase/firestore';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   // params.productには[product]のqueryが入る。
@@ -24,9 +26,73 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const user = useRecoilValue(userState);
   const [quantity, setQuantity] = useState<number>(1);
+  const [favorite, setFavorite] = useState(false);
   const setLoginModal = useSetRecoilState(loginModalState);
   const setButtonClick = useSetRecoilState(buttonClickState);
-  const { addItem } = useShoppingCart();
+  const { addItem, cartDetails } = useShoppingCart();
+  console.log(cartDetails);
+  //【商品をカートに追加した時、データベースにdocumentを作成する。】
+  useEffect(() => {
+    (async () => {
+      const productId = await filteringProduct[0].id;
+      // Object.entriesは配列を返す
+      // cartDetailsはオブジェクト。キーがpriceIdで、値が商品情報が入ったオブジェクト。
+      const cartContents = Object.entries(cartDetails!).map(([priceId, detail]) => ({
+        id: priceId,
+        productId: detail.productId,
+        name: detail.name,
+        price: detail.price,
+        currency: detail.currency,
+        image: detail.image,
+        quantity: detail.quantity,
+      }));
+      // cartDetailの中からカートに入れた商品のオブジェクトを取得。
+      const targetCartContent = cartContents.filter((cartContent) => cartContent.productId === productId);
+      // useEffectがマウント毎に実行されるため、空のdocumentを生成しないようにreturnする
+      if (targetCartContent.length === 0) return;
+      // setDocの引数にオブジェクトしか渡せない為、オブジェクトに変換する。
+      // 配列の0番目を指定することで、キー無しのオブジェクトのみを返すことができる。
+      const cartObject = Object.assign({}, targetCartContent[0]);
+      //商品IDのdocumentを作成
+      const documentRef = doc(db, 'users', user.user.uid, 'cart', productId);
+      await setDoc(documentRef, cartObject);
+    })();
+  }, [cartDetails]);
+
+  //【商品をお気に入りに追加した時、データベースにdocumentを作成する。】
+  useEffect(() => {
+    (async () => {
+      if (favorite === false) return;
+      try {
+        const productObject = {
+          id: filteringProduct[0].id,
+          description: filteringProduct[0].description,
+          name: filteringProduct[0].name,
+          images: filteringProduct[0].images,
+          unit_label: filteringProduct[0].unit_label,
+          cate: filteringProduct[0].cate,
+          thum1: filteringProduct[0].thum1,
+          thum2: filteringProduct[0].thum2,
+          thum3: filteringProduct[0].thum3,
+          prices: filteringProduct[0].prices.map((price: any) => {
+            return {
+              id: price.id,
+              currency: price.currency,
+              transform_quantity: price.transform_quantity,
+              unit_amount: price.unit_amount,
+            };
+          }),
+        };
+        const documentRef = doc(db, 'users', user.user.uid, 'favorite', productObject.id);
+        await setDoc(documentRef, productObject);
+        setFavorite(false);
+        alert('お気に入りに追加しました');
+      } catch (err) {
+        setFavorite(false);
+        alert(err);
+      }
+    })();
+  }, [favorite]);
 
   return (
     <>
@@ -103,7 +169,7 @@ const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typ
                           user !== null
                             ? // CartDetailの内容に追加
                               // 購入数の数だけaddItemする
-                              [...Array(quantity)].map(() =>
+                              [...Array(quantity)].map(() => {
                                 addItem({
                                   id: price.id,
                                   productId: filteringProduct[0].id,
@@ -111,8 +177,8 @@ const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typ
                                   price: price.unit_amount,
                                   currency: price.currency,
                                   image: filteringProduct[0].images[0],
-                                })
-                              )
+                                });
+                              })
                             : setLoginModal(true);
                         }}
                       >
@@ -122,7 +188,7 @@ const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typ
                       <button
                         className="c-btn ja reverse"
                         onClick={() => {
-                          user !== null ? null : setLoginModal(true);
+                          user !== null ? setFavorite(true) : setLoginModal(true);
                         }}
                       >
                         <span className="favorite">お気に入りに追加</span>

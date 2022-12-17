@@ -1,12 +1,26 @@
-import "../styles/globals.scss";
-import type { AppProps } from "next/app";
-import { RecoilRoot } from "recoil";
-import { Layout } from "../components/Layout";
-import { DefaultSeo } from "next-seo";
-import { defaultSEO } from "../constants/next-seo.config";
-import { CartProvider } from "use-shopping-cart";
+import '../styles/globals.scss';
+import type { AppProps } from 'next/app';
+import { RecoilRoot, useRecoilValue } from 'recoil';
+import { Layout } from '../components/Layout';
+import { DefaultSeo } from 'next-seo';
+import { defaultSEO } from '../constants/next-seo.config';
+import { CartProvider, useShoppingCart } from 'use-shopping-cart';
+import Head from 'next/head';
+import { useEffect } from 'react';
+import { userState } from '../lib/atoms';
 
-import Head from "next/head";
+function AppInit() {
+  const { clearCart } = useShoppingCart();
+  const user = useRecoilValue(userState);
+  useEffect(() => {
+    (async () => {
+      if (user === null) {
+        clearCart();
+      }
+    })();
+  }, [user]);
+  return null;
+}
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -22,15 +36,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     >
       <RecoilRoot>
         <Head>
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width"
-          />
+          <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
         </Head>
         <DefaultSeo {...defaultSEO} />
         <Layout>
           <Component {...pageProps} />
         </Layout>
+        <AppInit />
       </RecoilRoot>
     </CartProvider>
   );

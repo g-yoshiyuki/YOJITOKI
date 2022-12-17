@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@use "../setting" as s;
+@use '../setting' as s;
 
 .l-btn {
   margin-top: 30px;
@@ -83,7 +83,7 @@
       weight: 500;
       family: s.$f-sans;
     }
-    letter-spacing: 0em;
+    letter-spacing: 0;
     height: 55px;
   }
   &.reverse {
@@ -92,6 +92,14 @@
     color: s.$c-text;
     &:hover {
       background: s.$white;
+    }
+  }
+  &.cv {
+    background: s.$ac;
+    &:hover {
+      // background: #dc6816;
+      background: #af5210;
+
     }
   }
   &.submit {
@@ -106,8 +114,8 @@
       font-size: 16px;
     }
     &:hover {
-      background: #dc6816;
-      // background: #d06010;
+      // background: #dc6816;
+      background: #af5210;
     }
   }
   .cart,
@@ -120,7 +128,7 @@
     align-items: center;
     justify-content: center;
     &::after {
-      content: "";
+      content: '';
       width: 17px;
       height: 19px;
       margin-left: 0.5em;
@@ -128,32 +136,32 @@
   }
   .cart {
     &::after {
-      @include s.bg("ico_cart_white.svg");
+      @include s.bg('ico_cart_white.svg');
     }
   }
   .favorite {
     &::after {
-      @include s.bg("ico_favorite.svg");
+      @include s.bg('ico_favorite.svg');
     }
   }
   .mail {
     &::after {
-      @include s.bg("ico_mail.svg");
+      @include s.bg('ico_mail.svg');
     }
   }
   .send {
     &::after {
-      @include s.bg("ico_send.svg");
+      @include s.bg('ico_send.svg');
     }
   }
   .pencil {
     &::after {
-      @include s.bg("ico_pencil.svg");
+      @include s.bg('ico_pencil.svg');
     }
   }
   .checkout {
     &::after {
-      @include s.bg("ico_checkout.svg");
+      @include s.bg('ico_checkout.svg');
       background-size: cover;
       width: 21px;
       height: 21px;

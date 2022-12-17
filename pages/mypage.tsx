@@ -1,15 +1,15 @@
-import { NextPage } from "next";
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { auth } from "../lib/firebase";
-import { useRouter } from "next/router";
-import { ResetModal } from "../components/ResetModal";
-import { userState, userDocState } from "../lib/atoms";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import { signOut } from "firebase/auth";
+import { NextPage } from 'next';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { auth } from '../lib/firebase';
+import { useRouter } from 'next/router';
+import { ResetModal } from '../components/ResetModal';
+import { userState, userDocState } from '../lib/atoms';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { signOut } from 'firebase/auth';
 
-import { db } from "../lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { db } from '../lib/firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 const Mypage: NextPage = () => {
   const [user, setUser] = useRecoilState(userState);
@@ -19,7 +19,7 @@ const Mypage: NextPage = () => {
 
   useEffect(() => {
     (async () => {
-      const documentRef = doc(db, "users", user.user.uid);
+      const documentRef = doc(db, 'users', user.user.uid);
       const document = await getDoc(documentRef);
       setUserData(document.data());
       setUserDoc(document.data());
@@ -34,7 +34,7 @@ const Mypage: NextPage = () => {
     logout()
       .then(() => {
         setUser(null);
-        router.push("./");
+        router.push('./');
       })
       .catch((error) => console.error(error));
   };

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';

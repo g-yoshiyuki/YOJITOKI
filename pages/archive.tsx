@@ -16,7 +16,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const Archive: NextPage = ({ products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-
   const [filter, setFilter] = useState<any>('update');
   const [filteredProducts, setFilteredProducts] = useState<any>(products);
 

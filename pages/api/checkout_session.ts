@@ -1,11 +1,8 @@
-import Stripe from "stripe";
-import type { NextApiRequest, NextApiResponse } from "next";
+import Stripe from 'stripe';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method!.toLocaleLowerCase() !== "post") {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method!.toLocaleLowerCase() !== 'post') {
     return res.status(405).end();
   }
   try {
@@ -34,11 +31,11 @@ export default async function handler(
         ];
 
     const stripe = new Stripe(process.env.STRIPE_API_KEY, {
-      apiVersion: "2022-11-15",
+      apiVersion: '2022-11-15',
       maxNetworkRetries: 3,
     });
     const session = await stripe.checkout.sessions.create({
-      mode: "payment",
+      mode: 'payment',
       line_items: lineItems,
       success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/success`,
       cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/cancel`,

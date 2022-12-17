@@ -131,20 +131,20 @@ export const handleRegisterFormValidate = (event: React.FormEvent<HTMLFormElemen
 // レジスターシステムバリデート
 export const createUserWithEmailAndPasswordValidate = (errorCode: any) => {
   switch (errorCode) {
-    case "auth/cancelled-popup-request":
-    case "auth/popup-closed-by-user":
+    case 'auth/cancelled-popup-request':
+    case 'auth/popup-closed-by-user':
       return;
-    case "auth/email-already-in-use":
-      alert("このメールアドレスは使用されています");
+    case 'auth/email-already-in-use':
+      alert('このメールアドレスは使用されています');
       return;
-    case "auth/invalid-email":
-      alert("メールアドレスの形式が正しくありません");
+    case 'auth/invalid-email':
+      alert('メールアドレスの形式が正しくありません');
       return;
-    case "auth/weak-password":
-      alert("パスワードは6文字以上にしてください");
+    case 'auth/weak-password':
+      alert('パスワードは6文字以上にしてください');
       return;
     default:
-      alert("登録に失敗しました。しばらく時間をおいて再度お試しください");
+      alert('登録に失敗しました。しばらく時間をおいて再度お試しください');
       return;
   }
-}
+};

@@ -22,7 +22,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   });
 
   //stripeに登録した商品一覧を取得(料金情報は含まれない)
-  const products = await stripe.products.list();
+  // デフォルトのページネーション設定で10件しか表示されない。
+  // "limit"の値を指定することで変更できる。
+  const products = await stripe.products.list({ limit: 12 });
 
   //商品データが０件だった場合に空の配列を返す
   if (!products.data || products.data.length < 1) {

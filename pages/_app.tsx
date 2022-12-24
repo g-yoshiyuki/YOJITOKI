@@ -1,21 +1,29 @@
 import '../styles/globals.scss';
 import type { AppProps } from 'next/app';
-import { RecoilRoot, useRecoilValue } from 'recoil';
+import { RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil';
 import { Layout } from '../components/Layout';
 import { DefaultSeo } from 'next-seo';
 import { defaultSEO } from '../constants/next-seo.config';
 import { CartProvider, useShoppingCart } from 'use-shopping-cart';
 import Head from 'next/head';
 import { useEffect } from 'react';
-import { userState } from '../lib/atoms';
+import { userDocState, userState } from '../lib/atoms';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 function AppInit() {
   const { clearCart } = useShoppingCart();
   const user = useRecoilValue(userState);
+  const setUserDoc = useSetRecoilState<any>(userDocState);
   useEffect(() => {
     (async () => {
       if (user === null) {
         clearCart();
+        setUserDoc([]);
+      } else {
+        const documentRef = doc(db, 'users', user.user.uid);
+        const document = await getDoc(documentRef);
+        setUserDoc(document.data());
       }
     })();
   }, [user]);

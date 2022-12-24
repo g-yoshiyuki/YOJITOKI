@@ -2,13 +2,13 @@ import { NextPage } from 'next';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { userDocState, userState } from '../lib/atoms';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { db } from '../lib/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 
 const MypageEdit: NextPage = () => {
   const user = useRecoilValue(userState);
-  const userDoc = useRecoilValue<any>(userDocState);
+  const [userDoc, setUserDoc] = useRecoilState<any>(userDocState);
   const [name, setName] = useState(userDoc.name);
   const [email, setEmail] = useState(userDoc.email);
   const [postCode, setPostCode] = useState(userDoc.postCode);
@@ -19,7 +19,6 @@ const MypageEdit: NextPage = () => {
 
   const newMemberInfo = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const changeDoc = doc(db, "users", docId);
     const documentRef = doc(db, 'users', user.user.uid);
     await updateDoc(documentRef, {
       name: name,
@@ -31,6 +30,14 @@ const MypageEdit: NextPage = () => {
     })
       .then(() => {
         alert('会員情報を保存しました');
+        setUserDoc({
+          name: name,
+          email: email,
+          postCode: postCode,
+          address: address,
+          phoneNumber: phoneNumber,
+          dob: dob,
+        });
         router.push('./mypage');
       })
       .catch((error) => console.error(error));

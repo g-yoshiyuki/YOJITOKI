@@ -1,30 +1,16 @@
 import { NextPage } from 'next';
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { auth } from '../lib/firebase';
 import { useRouter } from 'next/router';
 import { ResetModal } from '../components/ResetModal';
 import { userState, userDocState } from '../lib/atoms';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { signOut } from 'firebase/auth';
 
-import { db } from '../lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
-
 const Mypage: NextPage = () => {
-  const [user, setUser] = useRecoilState(userState);
-  const setUserDoc = useSetRecoilState<any>(userDocState);
-  const [userData, setUserData] = useState<any>([]);
+  const setUser = useSetRecoilState(userState);
+  const userDoc = useRecoilValue<any>(userDocState);
   const router = useRouter();
-
-  useEffect(() => {
-    (async () => {
-      const documentRef = doc(db, 'users', user.user.uid);
-      const document = await getDoc(documentRef);
-      setUserData(document.data());
-      setUserDoc(document.data());
-    })();
-  }, []);
 
   // authからログアウト
   const logout = (): Promise<void> => {
@@ -56,27 +42,27 @@ const Mypage: NextPage = () => {
         <div className="memberInfo">
           <dl>
             <dt>お名前</dt>
-            <dd>{userData.name}</dd>
+            <dd>{userDoc.name}</dd>
           </dl>
           <dl>
             <dt>メールアドレス</dt>
-            <dd>{userData.email}</dd>
+            <dd>{userDoc.email}</dd>
           </dl>
           <dl>
             <dt>郵便番号</dt>
-            <dd>{userData.postCode}</dd>
+            <dd>{userDoc.postCode}</dd>
           </dl>
           <dl>
             <dt>住所</dt>
-            <dd>{userData.address}</dd>
+            <dd>{userDoc.address}</dd>
           </dl>
           <dl>
             <dt>電話番号</dt>
-            <dd>{userData.phoneNumber}</dd>
+            <dd>{userDoc.phoneNumber}</dd>
           </dl>
           <dl>
             <dt>生年月日</dt>
-            <dd>{userData.dob}</dd>
+            <dd>{userDoc.dob}</dd>
           </dl>
         </div>
         <section className="l-orderHistory">

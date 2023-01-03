@@ -99,7 +99,6 @@
     &:hover {
       // background: #dc6816;
       background: #af5210;
-
     }
   }
   &.submit {
@@ -244,5 +243,38 @@
   &:focus {
     border: 1px solid transparent;
     filter: drop-shadow(0px 0px 6px rgba(162, 146, 130, 0.3));
+  }
+}
+
+// ページネーション
+.pagination {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 60px;
+  @include s.ssm {
+    margin-top: 40px;
+  }
+  li {
+    a {
+      background: s.$white;
+      margin: 0 2px;
+      border-radius: 6px;
+      border: 1px solid s.$border;
+      // filter: drop-shadow(0px 0px 1px rgba(162, 146, 130, 0.6));
+
+      width: 45px;
+      height: 45px;
+      @include s.flex-center;
+      color: s.$c-sub;
+      cursor: pointer;
+    }
+    &.active {
+      a {
+        color: s.$c-text;
+        cursor: default;
+        background: s.$border;
+      }
+    }
   }
 }

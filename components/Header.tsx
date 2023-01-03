@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { memo } from "react";
+// import { memo } from "react";
 import { useRecoilValue, useSetRecoilState, useRecoilState } from "recoil";
 import { loginModalState, userState, buttonClickState } from "../lib/atoms";
 import { LoginModal } from "./LoginModal";

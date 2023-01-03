@@ -79,6 +79,7 @@ const Cate: NextPage = ({ categoryProducts }: any) => {
                           return (
                             <span className="price" key={price.id}>
                               ￥{price.unit_amount.toLocaleString()}
+                              {product.stock <= 0 ? <span className="soldOutLabel">SOLD OUT</span> : null}
                             </span>
                           );
                         })}

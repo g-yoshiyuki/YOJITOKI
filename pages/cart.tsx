@@ -111,6 +111,10 @@ const Cart: NextPage = () => {
                               className="increment"
                               value="＋"
                               onClick={() => {
+                                if (detail.quantity + 1 > detail.stock) {
+                                  alert('在庫がありません');
+                                  return;
+                                }
                                 // ヘッダーカートアイコンのアニメーション
                                 setButtonClick(true);
                                 setTargetPriceId(priceId);
@@ -149,6 +153,7 @@ const Cart: NextPage = () => {
                         // 中身
                         // カートの商品ひとつづつ取り出して情報をcheckout_sessionにpost送信。
                         body: JSON.stringify({
+                          userId: user.user.uid,
                           items: Object.entries(cartDetails!).map(([_id, detail]) => ({
                             id: detail.id,
                             quantity: detail.quantity,

@@ -27,6 +27,12 @@
     margin-top: 40px;
   }
 }
+.mb1 {
+  margin-bottom: 1em;
+}
+.mb15 {
+  margin-bottom: 1.5em;
+}
 // レイアウト///////////
 .inner {
   width: 90%;
@@ -38,6 +44,9 @@
   justify-content: flex-end;
 }
 // テキストスタイル//////////
+.c-text {
+  line-height: 1.7;
+}
 .ib {
   display: inline-block;
 }
@@ -68,6 +77,10 @@
 }
 .accent {
   color: s.$text_ac;
+}
+.cautionText {
+  color: s.$text_ac;
+  display: block;
 }
 .l-totalAmount {
   text-align: right;

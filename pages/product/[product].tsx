@@ -30,7 +30,6 @@ const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typ
   const setLoginModal = useSetRecoilState(loginModalState);
   const setButtonClick = useSetRecoilState(buttonClickState);
   const { addItem, cartDetails } = useShoppingCart();
-  console.log(cartDetails);
   //【商品をカートに追加した時、データベースにdocumentを作成する。】
   useEffect(() => {
     (async () => {
@@ -96,7 +95,7 @@ const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typ
 
   return (
     <>
-      <NextSeo {...productSEO} />
+      <NextSeo {...productSEO} canonical={`${process.env.NEXT_PUBLIC_BASE_URL}product/${filteringProduct[0].id}`} />
       <main className="inner">
         <section className="l-single c-pb">
           <div className="single">
@@ -160,10 +159,17 @@ const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typ
                         </div>
                       </div>
                     </div>
+                    {/* 在庫が3点以下になると表示。 */}
+                    {filteringProduct[0].stock <= 3 ? <span className="cautionText">※残り商品{filteringProduct[0].stock}点</span> : null}
                     <div className="l-btn">
                       <button
                         className="c-btn ja"
                         onClick={() => {
+                          if (quantity > filteringProduct[0].stock) {
+                            alert('在庫がありません');
+                            return;
+                          }
+
                           // ヘッダーカートアイコンのアニメーション
                           setButtonClick(true);
                           user !== null
@@ -177,6 +183,7 @@ const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typ
                                   price: price.unit_amount,
                                   currency: price.currency,
                                   image: filteringProduct[0].images[0],
+                                  stock: filteringProduct[0].stock,
                                 });
                               })
                             : setLoginModal(true);

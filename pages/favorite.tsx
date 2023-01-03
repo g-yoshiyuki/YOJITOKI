@@ -40,7 +40,6 @@ const Favorite: NextPage = () => {
         }))
       );
     });
-    // クリーンアップ関数
     return () => {
       unSub();
     };

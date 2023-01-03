@@ -15,16 +15,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method!.toLocaleLowerCase() !== 'get') {
     return res.status(405).end();
   }
-
   const stripe = new Stripe(process.env.STRIPE_API_KEY, {
     apiVersion: '2022-11-15',
     maxNetworkRetries: 3,
   });
-
   //stripeに登録した商品一覧を取得(料金情報は含まれない)
   // デフォルトのページネーション設定で10件しか表示されない。
   // "limit"の値を指定することで変更できる。
-  const products = await stripe.products.list({ limit: 12 });
+  const products = await stripe.products.list({ limit: 1000});
 
   //商品データが０件だった場合に空の配列を返す
   if (!products.data || products.data.length < 1) {
@@ -47,6 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         thum1: product.metadata.thum1,
         thum2: product.metadata.thum2,
         thum3: product.metadata.thum3,
+        stock: product.metadata.stock,
         // 料金は複数設定されている可能性があるのでmapで展開する
         prices: prices.data.map((price) => {
           return {

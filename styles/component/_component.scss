@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@use "../setting" as s;
+@use '../setting' as s;
 
 // モーダル//////////////
 .l-modal {
@@ -16,7 +16,7 @@
   overflow-y: scroll;
   z-index: 10;
   &::before {
-    content: "";
+    content: '';
     width: 1px;
     height: calc(100vh + 1px);
     background: transparent;
@@ -138,7 +138,7 @@
         transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
       }
       &::before {
-        content: "";
+        content: '';
         background: rgba(162, 146, 130, 0.5);
         background: rgba(180, 154, 132, 0.3);
         background: rgba(164, 130, 104, 0.2);
@@ -147,7 +147,7 @@
         z-index: 1;
       }
       &::after {
-        content: "VIEW MORE";
+        content: 'VIEW MORE';
         color: s.$white;
         font: {
           size: 18px;
@@ -193,6 +193,26 @@
       .price {
         color: s.$c-sub;
         letter-spacing: 0.06em;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      // 売り切れ時に表示するラベル
+      .soldOutLabel {
+        letter-spacing: 0;
+        font: {
+          size: 13px;
+          weight: 500;
+          family: s.$f-en;
+        }
+        background: s.$white;
+        border: 1px solid s.$c-text;
+        border-radius: 2px;
+        padding: 0.2em 0.68em;
+        color: s.$c-text;
+        @include s.ssm {
+          font-size: 11px;
+        }
       }
     }
     & a:hover {
@@ -210,31 +230,31 @@
         }
       }
     }
-    &.soldout {
-      .price {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        &::after {
-          content: "SOLD OUT";
-          display: inline-block;
-          letter-spacing: 0;
-          font: {
-            size: 13px;
-            weight: 500;
-            family: s.$f-en;
-          }
-          background: s.$white;
-          border: 1px solid s.$c-text;
-          border-radius: 2px;
-          padding: 0.2em 0.68em;
-          color: s.$c-text;
-          @include s.ssm {
-            font-size: 11px;
-          }
-        }
-      }
-    }
+    // &.soldout {
+    //   .price {
+    //     display: flex;
+    //     align-items: center;
+    //     justify-content: space-between;
+    //     &::after {
+    //       content: 'SOLD OUT';
+    //       display: inline-block;
+    //       letter-spacing: 0;
+    //       font: {
+    //         size: 13px;
+    //         weight: 500;
+    //         family: s.$f-en;
+    //       }
+    //       background: s.$white;
+    //       border: 1px solid s.$c-text;
+    //       border-radius: 2px;
+    //       padding: 0.2em 0.68em;
+    //       color: s.$c-text;
+    //       @include s.ssm {
+    //         font-size: 11px;
+    //       }
+    //     }
+    //   }
+    // }
   }
 }
 

@@ -52,3 +52,7 @@ export const buttonClickState = atom({
   key: 'buttonClick',
   default: false,
 });
+export const paymentsDataState = atom({
+  key: 'paymentsData',
+  default: [],
+});

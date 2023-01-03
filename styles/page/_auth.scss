@@ -42,17 +42,15 @@
     }
     textarea {
       width: 100%;
-      height: 70px;
-      padding: {
-        top: 10px;
-        bottom: 10px;
-      }
+      height: 90px;
+      padding: .8em 1em;
       resize: none;
-      border: 1px solid #aaa;
+      border: 1px solid s.$border;
       border-radius: 4px;
-      transition: 0.2s;
-      &:hover {
-        border: 1px solid #000;
+      transition: 0.3s;
+      &:focus {
+        border: 1px solid transparent;
+        filter: drop-shadow(0px 0px 6px rgba(162, 146, 130, 0.3));
       }
     }
   }
@@ -132,6 +130,17 @@
 /*マイページ
 /* ----------------------- */
 .memberInfo {
+  // 注文履歴
+  &.payment {
+    &:not(:last-child) {
+      margin-bottom: 30px;
+    }
+  }
+  &Inner {
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+  }
   dl {
     padding: (18/16)*1em .5em;
     display: flex;
@@ -141,6 +150,16 @@
     }
     &:not(:last-child) {
       border-bottom: 1px solid s.$border;
+    }
+    // 注文履歴の時間帯
+    &.l-timestamp {
+      background: s.$c-sub;
+      background: s.$border;
+      background: rgba(212, 204, 203,.4);
+      // border-bottom: 2px solid s.$c-ttlSub;
+      // border-bottom: 2px solid s.$border;
+      margin-bottom: 20px;
+
     }
     dt {
       font-weight: 500;
@@ -153,7 +172,9 @@
     dd {
       color: s.$c-sub;
     }
+
   }
+
 }
 .l-orderHistory {
   padding-top: 50px;

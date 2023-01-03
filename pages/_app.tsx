@@ -7,7 +7,7 @@ import { defaultSEO } from '../constants/next-seo.config';
 import { CartProvider, useShoppingCart } from 'use-shopping-cart';
 import Head from 'next/head';
 import { useEffect } from 'react';
-import { userDocState, userState } from '../lib/atoms';
+import { paymentsDataState, userDocState, userState } from '../lib/atoms';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
@@ -15,11 +15,15 @@ function AppInit() {
   const { clearCart } = useShoppingCart();
   const user = useRecoilValue(userState);
   const setUserDoc = useSetRecoilState<any>(userDocState);
+  const setPaymentsData = useSetRecoilState<any>(paymentsDataState);
+
+  // ユーザーに変更があった時、ユーザーのdocumentを取得してマイページに反映させる。
   useEffect(() => {
     (async () => {
       if (user === null) {
         clearCart();
         setUserDoc([]);
+        setPaymentsData([]);
       } else {
         const documentRef = doc(db, 'users', user.user.uid);
         const document = await getDoc(documentRef);

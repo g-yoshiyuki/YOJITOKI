@@ -1,16 +1,17 @@
 import { InferGetServerSidePropsType, NextPage } from 'next';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Category } from '../../components/Category';
 import { NextSeo } from 'next-seo';
 import { productSEO } from '../../constants/next-seo.config';
 import { useShoppingCart } from 'use-shopping-cart';
 import { LoginModal } from '../../components/LoginModal';
-import { loginModalState, userState, buttonClickState } from '../../lib/atoms';
+import { loginModalState, userState, buttonClickState, pageLoadingState } from '../../lib/atoms';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { GetServerSideProps } from 'next';
 import { db } from '../../lib/firebase';
 import { doc, setDoc } from 'firebase/firestore';
+import { loading } from '../../lib/loading';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   // params.productには[product]のqueryが入る。
@@ -30,6 +31,7 @@ const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typ
   const setLoginModal = useSetRecoilState(loginModalState);
   const setButtonClick = useSetRecoilState(buttonClickState);
   const { addItem, cartDetails } = useShoppingCart();
+  const pageLoading = useRecoilValue(pageLoadingState);
   //【商品をカートに追加した時、データベースにdocumentを作成する。】
   useEffect(() => {
     (async () => {
@@ -93,13 +95,24 @@ const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typ
     })();
   }, [favorite]);
 
+  // 商品画像のスケルトンスクリーン
+  const galleryRef: any = useRef([]);
+  useEffect(() => {
+    if (galleryRef.current.length === 0) return;
+    console.log(galleryRef);
+    console.log(pageLoading);
+    if (pageLoading === 'default' || 'complete') {
+      loading(galleryRef, pageLoading);
+    }
+  }, [galleryRef, pageLoading]);
+
   return (
     <>
       <NextSeo {...productSEO} canonical={`${process.env.NEXT_PUBLIC_BASE_URL}product/${filteringProduct[0].id}`} />
       <main className="inner">
         <section className="l-single c-pb">
           <div className="single">
-            <div className="gallery">
+            <div className="gallery loading" ref={galleryRef}>
               <div className="galleryItem">
                 <input type="radio" id="img-1" defaultChecked name="gallery" className="galleryItem__selector" />
                 <Image className="galleryItem__img" src={filteringProduct[0].images[0]} width={743.4} height={400} alt="" />

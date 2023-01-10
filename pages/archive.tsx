@@ -6,6 +6,7 @@ import { NextSeo } from 'next-seo';
 import { archiveSEO } from '../constants/next-seo.config';
 import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
+import { PageTitle } from '../components/PageTitle';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const products = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/products`).then((response) => response.json());
@@ -42,13 +43,13 @@ const Archive: NextPage = ({ products }: InferGetServerSidePropsType<typeof getS
     const sortProducts = () => {
       switch (filter) {
         case 'height':
-          var cloneProducts = Array.from(currentProducts);
-          const sortLowArray = cloneProducts.sort((a: any, b: any) => Date.parse(b.prices[0].unit_amount) - Date.parse(a.prices[0].unit_amount));
+          const cloneProductsHeight = Array.from(currentProducts);
+          const sortLowArray = cloneProductsHeight.sort((a: any, b: any) => Date.parse(b.prices[0].unit_amount) - Date.parse(a.prices[0].unit_amount));
           setFilteredProducts(sortLowArray);
           break;
         case 'low':
-          var cloneProducts = Array.from(currentProducts);
-          const sortHeightArray = cloneProducts.sort((a: any, b: any) => Date.parse(a.prices[0].unit_amount) - Date.parse(b.prices[0].unit_amount));
+          const cloneProductsLow = Array.from(currentProducts);
+          const sortHeightArray = cloneProductsLow.sort((a: any, b: any) => Date.parse(a.prices[0].unit_amount) - Date.parse(b.prices[0].unit_amount));
           setFilteredProducts(sortHeightArray);
           break;
         default:
@@ -64,12 +65,7 @@ const Archive: NextPage = ({ products }: InferGetServerSidePropsType<typeof getS
     <>
       <NextSeo {...archiveSEO} />
       <main className="inner">
-        <div className="hero--lower">
-          <h2 className="c-title--lower">
-            <span className="heading">商品一覧</span>
-            <span className="cate en">Catalog Page</span>
-          </h2>
-        </div>
+        <PageTitle ja={'商品一覧'} en={'Catalog Page'} />
         <section className="l-products c-pb">
           <div className="l-alignRight">
             <select className="sortButton" value={filter} onChange={(e) => setFilter(e.target.value)}>

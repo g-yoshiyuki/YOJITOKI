@@ -7,6 +7,7 @@ import { useShoppingCart } from 'use-shopping-cart';
 import { useEffect, useState } from 'react';
 import { collection, deleteDoc, doc, getDocs, query, setDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import { PageTitle } from '../components/PageTitle';
 
 const Cart: NextPage = () => {
   const user = useRecoilValue(userState);
@@ -49,18 +50,10 @@ const Cart: NextPage = () => {
       }
     })();
   }, [cartDetails]);
-
   return (
     <>
       <main className="inner">
-        <div className="hero--lower">
-          <h2 className="c-title--lower">
-            <span className="heading">
-              ショッピング<span className="ib">カート</span>
-            </span>
-            <span className="cate en">Shopping Cart</span>
-          </h2>
-        </div>
+        <PageTitle ja={'ショッピング<span className="ib">カート</span>'} en={'Shopping Cart'} />
         <section className="l-cart c-pb">
           {cartCount !== 0 ? (
             <>

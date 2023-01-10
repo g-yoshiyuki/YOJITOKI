@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
+import { PageTitle } from '../components/PageTitle';
 import { userState } from '../lib/atoms';
 import { db } from '../lib/firebase';
 
@@ -52,12 +53,7 @@ const Favorite: NextPage = () => {
   return (
     <>
       <main className="inner">
-        <div className="hero--lower">
-          <h2 className="c-title--lower">
-            <span className="heading">お気に入り商品</span>
-            <span className="cate en">Favorite Product</span>
-          </h2>
-        </div>
+        <PageTitle ja={'お気に入り商品'} en={'Favorite Product'} />
         <section className="l-products c-pb">
           {products.length !== 0 ? (
             <>

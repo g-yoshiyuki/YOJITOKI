@@ -56,3 +56,7 @@ export const paymentsDataState = atom({
   key: 'paymentsData',
   default: [],
 });
+export const pageLoadingState = atom({
+  key: 'pageLoading',
+  default: 'default',
+});

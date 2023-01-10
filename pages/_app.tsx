@@ -7,15 +7,33 @@ import { defaultSEO } from '../constants/next-seo.config';
 import { CartProvider, useShoppingCart } from 'use-shopping-cart';
 import Head from 'next/head';
 import { useEffect } from 'react';
-import { paymentsDataState, userDocState, userState } from '../lib/atoms';
+import { pageLoadingState, paymentsDataState, userDocState, userState } from '../lib/atoms';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import { useRouter } from 'next/router';
 
 function AppInit() {
   const { clearCart } = useShoppingCart();
   const user = useRecoilValue(userState);
   const setUserDoc = useSetRecoilState<any>(userDocState);
   const setPaymentsData = useSetRecoilState<any>(paymentsDataState);
+
+  // router.eventsでページ遷移イベントを取得してpageLoadingStateの値を変更する
+  const router = useRouter();
+  const setPageLoading = useSetRecoilState<any>(pageLoadingState);
+  const handleStart = (url: any) => url !== router.asPath && setPageLoading('start');
+  const handleComplete = () => setPageLoading('complete');
+  useEffect(() => {
+    router.events.on('routeChangeStart', handleStart);
+    router.events.on('routeChangeComplete', handleComplete);
+    router.events.on('routeChangeError', handleComplete);
+
+    return () => {
+      router.events.off('routeChangeStart', handleStart);
+      router.events.off('routeChangeComplete', handleComplete);
+      router.events.off('routeChangeError', handleComplete);
+    };
+  });
 
   // ユーザーに変更があった時、ユーザーのdocumentを取得してマイページに反映させる。
   useEffect(() => {

@@ -27,6 +27,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const user = useRecoilValue(userState);
   const [quantity, setQuantity] = useState<number>(1);
+  const [counterStock, setCounterStock] = useState<number>(1);
   const [favorite, setFavorite] = useState(false);
   const setLoginModal = useSetRecoilState(loginModalState);
   const setButtonClick = useSetRecoilState(buttonClickState);
@@ -178,10 +179,17 @@ const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typ
                       <button
                         className="c-btn ja"
                         onClick={() => {
+                          // 購入数を変更してカートに追加した時に在庫数と照らし合わせる。
                           if (quantity > filteringProduct[0].stock) {
                             alert('在庫がありません');
                             return;
                           }
+                           // 商品をひとつずつカートに追加した時に在庫数と照らし合わせる。
+                         setCounterStock( counterStock + quantity)
+                         if(counterStock > filteringProduct[0].stock ) {
+                          alert('在庫がありません');
+                            return;
+                         }
 
                           // ヘッダーカートアイコンのアニメーション
                           setButtonClick(true);

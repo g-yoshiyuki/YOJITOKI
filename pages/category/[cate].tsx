@@ -24,6 +24,8 @@ const Cate: NextPage = ({ categoryProducts }: any) => {
   const [filter, setFilter] = useState<any>('update');
   const [filteredProducts, setFilteredProducts] = useState<any>(categoryProducts);
   const pageLoading = useRecoilValue(pageLoadingState);
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const loadingItemRef: any = useRef([]);
 
   useEffect(() => {
     const sortProducts = () => {
@@ -49,20 +51,24 @@ const Cate: NextPage = ({ categoryProducts }: any) => {
   }, [filter, categoryProducts]);
 
   // 商品画像のスケルトンスクリーン
-  const loadingItemRef: any = useRef([]);
-  filteredProducts.forEach((_: any, i: number) => {
-    loadingItemRef.current[i] = createRef();
-  });
   useEffect(() => {
-    console.log(pageLoading);
-    if (loadingItemRef.current.length === 0 || loadingItemRef.current[0].current === null) {
-      return;
+    // 取得した商品の数だけ、Refを生成する。
+    // filteredProductsを監視対象にすると、
+    // jsxでref属性を追加するタイミングでcreateRefが間に合わないので、categoryProductsを対象にする。
+    categoryProducts.forEach((_: any, i: number) => {
+      loadingItemRef.current[i] = createRef();
+    });
+    setIsReady(true);
+  }, [categoryProducts]);
+
+  useEffect(() => {
+    if (isReady) {
+      if (pageLoading === 'default' || pageLoading === 'complete') {
+        loading(loadingItemRef.current, pageLoading);
+        setIsReady(false)
+      }
     }
-    if (pageLoading === 'default' || 'complete') {
-      loading(loadingItemRef.current, pageLoading);
-      console.log(loadingItemRef.current);
-    }
-  }, [loadingItemRef, pageLoading]);
+  }, [pageLoading, isReady]);
 
   return (
     <>

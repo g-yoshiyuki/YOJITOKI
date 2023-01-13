@@ -100,8 +100,6 @@ const Product: NextPage = ({ filteringProduct }: InferGetServerSidePropsType<typ
   const galleryRef: any = useRef([]);
   useEffect(() => {
     if (galleryRef.current.length === 0) return;
-    console.log(galleryRef);
-    console.log(pageLoading);
     if (pageLoading === 'default' || 'complete') {
       loading(galleryRef, pageLoading);
     }

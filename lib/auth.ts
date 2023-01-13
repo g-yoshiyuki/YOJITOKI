@@ -4,7 +4,6 @@ import { pattern } from '../constants/constants';
 export const handleLoginFormValidate = (event: React.FormEvent<HTMLFormElement>): any => {
   event.preventDefault();
   const data = new FormData(event.currentTarget);
-  // console.log(data);
   // data.getはinputのname属性を指定する
   const email = data.get('loginEmail') !== null ? data.get('loginEmail')!.toString() : '';
   const password = data.get('loginPassword') !== null ? data.get('loginPassword')!.toString() : '';

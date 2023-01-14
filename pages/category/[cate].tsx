@@ -5,7 +5,10 @@ import { Category } from '../../components/Category';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { archiveSEO } from '../../constants/next-seo.config';
-import { useEffect, useState } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { pageLoadingState } from '../../lib/atoms';
+import { loading } from '../../lib/loading';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }: any) => {
   const cate = params.cate as string;
@@ -20,6 +23,9 @@ const Cate: NextPage = ({ categoryProducts }: any) => {
   const router = useRouter();
   const [filter, setFilter] = useState<any>('update');
   const [filteredProducts, setFilteredProducts] = useState<any>(categoryProducts);
+  const pageLoading = useRecoilValue(pageLoadingState);
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const loadingItemRef: any = useRef([]);
 
   useEffect(() => {
     const sortProducts = () => {
@@ -44,6 +50,26 @@ const Cate: NextPage = ({ categoryProducts }: any) => {
     // useStateのfilteredProductsが更新される
   }, [filter, categoryProducts]);
 
+  // 商品画像のスケルトンスクリーン
+  useEffect(() => {
+    // 取得した商品の数だけ、Refを生成する。
+    // filteredProductsを監視対象にすると、
+    // jsxでref属性を追加するタイミングでcreateRefが間に合わないので、categoryProductsを対象にする。
+    categoryProducts.forEach((_: any, i: number) => {
+      loadingItemRef.current[i] = createRef();
+    });
+    setIsReady(true);
+  }, [categoryProducts]);
+
+  useEffect(() => {
+    if (isReady) {
+      if (pageLoading === 'default' || pageLoading === 'complete') {
+        loading(loadingItemRef.current, pageLoading);
+        setIsReady(false)
+      }
+    }
+  }, [pageLoading, isReady]);
+
   return (
     <>
       <NextSeo {...archiveSEO} />
@@ -65,9 +91,9 @@ const Cate: NextPage = ({ categoryProducts }: any) => {
             </select>
           </div>
           <ul className="products">
-            {filteredProducts.map((product: any) => {
+            {filteredProducts.map((product: any, i: number) => {
               return (
-                <li className="productsItem" key={product.id}>
+                <li className="productsItem loading" key={product.id} ref={loadingItemRef.current[i]}>
                   <Link href={{ pathname: `/product/${product.id}` }}>
                     <a>
                       <div className="productsItem__img">

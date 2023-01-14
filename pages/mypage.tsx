@@ -6,7 +6,7 @@ import { ResetModal } from '../components/ResetModal';
 import { userState, userDocState, paymentsDataState } from '../lib/atoms';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { signOut } from 'firebase/auth';
-import { useEffect} from 'react';
+import { useEffect } from 'react';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 
 const Mypage: NextPage = () => {
@@ -14,6 +14,14 @@ const Mypage: NextPage = () => {
   const userDoc = useRecoilValue<any>(userDocState);
   const [paymentsData, setPaymentsData] = useRecoilState<any>(paymentsDataState);
   const router = useRouter();
+  const userDocData = [
+    { key: 'お名前', data: userDoc.name },
+    { key: 'メールアドレス', data: userDoc.email },
+    { key: '郵便番号', data: userDoc.postCode },
+    { key: '住所', data: userDoc.address },
+    { key: '電話番号', data: userDoc.phoneNumber },
+    { key: '生年月日', data: userDoc.dob },
+  ];
 
   useEffect(() => {
     const collectionRef = collection(db, 'users', user.user.uid, 'payment');
@@ -43,7 +51,6 @@ const Mypage: NextPage = () => {
       unSub();
     };
   }, []);
-  console.log(paymentsData);
   // authからログアウト
   const logout = (): Promise<void> => {
     return signOut(auth);
@@ -71,32 +78,15 @@ const Mypage: NextPage = () => {
           </Link>
         </div>
         <div className="memberInfo">
-          <dl>
-            <dt>お名前</dt>
-            <dd>{userDoc.name}</dd>
-          </dl>
-          <dl>
-            <dt>メールアドレス</dt>
-            <dd>{userDoc.email}</dd>
-          </dl>
-          <dl>
-            <dt>郵便番号</dt>
-            <dd>{userDoc.postCode}</dd>
-          </dl>
-          <dl>
-            <dt>住所</dt>
-            <dd>{userDoc.address}</dd>
-          </dl>
-          <dl>
-            <dt>電話番号</dt>
-            <dd>{userDoc.phoneNumber}</dd>
-          </dl>
-          <dl>
-            <dt>生年月日</dt>
-            <dd>{userDoc.dob}</dd>
-          </dl>
+          {userDocData.map((userDoc) => {
+            return (
+              <dl key={userDoc.key}>
+                <dt>{userDoc.key}</dt>
+                <dd>{userDoc.data}</dd>
+              </dl>
+            );
+          })}
         </div>
-
         <section className="l-orderHistory">
           <h3 className="c-title--center">注文履歴</h3>
           {paymentsData.length !== 0 ? (

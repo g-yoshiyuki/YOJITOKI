@@ -1,18 +1,23 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { buttonClickState, userState } from '../lib/atoms';
+import { buttonClickState, pageLoadingState, userState } from '../lib/atoms';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { useShoppingCart } from 'use-shopping-cart';
-import { useEffect, useState } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
 import { collection, deleteDoc, doc, getDocs, query, setDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
+import { PageTitle } from '../components/PageTitle';
+import { loading } from '../lib/loading';
 
 const Cart: NextPage = () => {
   const user = useRecoilValue(userState);
   const { cartDetails, removeItem, formattedTotalPrice, cartCount, incrementItem, decrementItem } = useShoppingCart();
   const setButtonClick = useSetRecoilState(buttonClickState);
   const [targetPriceId, setTargetPriceId] = useState<any>(null);
+  const pageLoading = useRecoilValue(pageLoadingState);
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const loadingItemRef: any = useRef([]);
 
   useEffect(() => {
     (async () => {
@@ -50,30 +55,42 @@ const Cart: NextPage = () => {
     })();
   }, [cartDetails]);
 
+  // 商品画像のスケルトンスクリーン
+  useEffect(() => {
+    if (!cartDetails) return;
+    Object.entries(cartDetails).forEach((_: any, i: number) => {
+      loadingItemRef.current[i] = createRef();
+    });
+    setIsReady(true);
+  }, [cartDetails]);
+
+  useEffect(() => {
+    if (isReady) {
+      if (pageLoading === 'default' || pageLoading === 'complete') {
+        loading(loadingItemRef.current, pageLoading);
+        setIsReady(false);
+      }
+    }
+  }, [pageLoading, isReady]);
+
   return (
     <>
       <main className="inner">
-        <div className="hero--lower">
-          <h2 className="c-title--lower">
-            <span className="heading">
-              ショッピング<span className="ib">カート</span>
-            </span>
-            <span className="cate en">Shopping Cart</span>
-          </h2>
-        </div>
+        <PageTitle ja={'ショッピング<span className="ib">カート</span>'} en={'Shopping Cart'} />
         <section className="l-cart c-pb">
           {cartCount !== 0 ? (
             <>
               <ul className="products">
                 {/* Object.entries()メソッドは、引数のオブジェクトが所有する、文字列をキーとした列挙可能なプロパティの組 [key, value] からなる配列を返す */}
-                {Object.entries(cartDetails!).map(([priceId, detail]) => {
+                {Object.entries(cartDetails!).map(([priceId, detail], i: number) => {
                   return (
-                    <li className="productsItem" key={priceId}>
+                    <li className="productsItem loading" key={priceId} ref={loadingItemRef.current[i]}>
                       <span
                         className="deleteIcon"
                         onClick={() => {
                           setTargetPriceId(priceId);
                           removeItem(priceId);
+                          loadingItemRef.current = []
                         }}
                       >
                         <img src="img/delete.svg" alt="" />

@@ -1,9 +1,12 @@
-import { useRef } from 'react';
+import { createRef, useEffect, useRef } from 'react';
 import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Category } from '../components/Category';
 import { newsData } from '../constants/newsData';
+import { loading } from '../lib/loading';
+import { useRecoilValue } from 'recoil';
+import { pageLoadingState } from '../lib/atoms';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const products = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/products`).then((response) => response.json());
@@ -16,20 +19,35 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
 const Home: NextPage = ({ products }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const selectProducts = products.slice(0, 8);
-  const elm: any = useRef();
+  const pageLoading = useRecoilValue(pageLoadingState);
 
-  // キービジアニメーション
-  // useEffect(() => {
-  //   window.onload = function() {
-  //     elm.current.classList.add('__anima');
-  //     }
-  // }, []);
+  // キービジュアルのスケルトンスクリーン
+  const kvRef: any = useRef([]);
+  useEffect(() => {
+    if (kvRef.current.length === 0) return;
+    if (pageLoading === 'default' || 'complete') {
+      loading(kvRef, pageLoading);
+    }
+  }, [kvRef, pageLoading]);
+
+  // 商品画像のスケルトンスクリーン
+  const loadingItemRef: any = useRef([]);
+  // // 表示する商品の数だけrefを生成する
+  selectProducts.forEach((_: any, i: number) => {
+    loadingItemRef.current[i] = createRef();
+  });
+  useEffect(() => {
+    if (loadingItemRef.current.length === 0) return;
+    if (pageLoading === 'default' || 'complete') {
+      loading(loadingItemRef.current, pageLoading);
+    }
+  }, [loadingItemRef, pageLoading]);
 
   return (
     <>
       <main className="inner">
-        <div className="l-hero l-kvAnima" id="js-anima" ref={elm}>
-          <picture className="hero kvAnima">
+        <div className="l-hero l-kvAnima loading" ref={kvRef}>
+          <picture className="hero">
             <source media="(min-width: 769px)" srcSet="img/hero.jpg" id="hero1" width="2100" height="860" />
             <source media="(max-width: 768px)" srcSet="img/hero_sp.jpg" id="hero2" width="675" height="600" />
             <img src="img/hero.jpg" alt="" width="2100" height="860" />
@@ -40,9 +58,9 @@ const Home: NextPage = ({ products }: InferGetServerSidePropsType<typeof getServ
             商品一覧<span>Products</span>
           </h2>
           <ul className="products">
-            {selectProducts.map((product: any) => {
+            {selectProducts.map((product: any, i: number) => {
               return (
-                <li className="productsItem" key={product.id}>
+                <li className="productsItem loading" key={product.id} ref={loadingItemRef.current[i]}>
                   <Link href={{ pathname: `/product/${product.id}` }}>
                     <a>
                       <div className="productsItem__img">

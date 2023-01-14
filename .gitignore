@@ -35,5 +35,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
+# 追加
 /アセット
+yojitoki-ecsite-firebase-adminsdk-fp2j7-76e04971b4.json

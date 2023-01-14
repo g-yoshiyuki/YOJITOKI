@@ -2,14 +2,19 @@ import { collection, deleteDoc, doc, onSnapshot, query } from 'firebase/firestor
 import { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { createRef, useEffect, useRef, useState } from 'react';
 import { useRecoilValue } from 'recoil';
-import { userState } from '../lib/atoms';
+import { PageTitle } from '../components/PageTitle';
+import { pageLoadingState, userState } from '../lib/atoms';
 import { db } from '../lib/firebase';
+import { loading } from '../lib/loading';
 
 const Favorite: NextPage = () => {
   const user = useRecoilValue(userState);
   const [products, setProducts] = useState<any>([]);
+  const pageLoading = useRecoilValue(pageLoadingState);
+  const [isReady, setIsReady] = useState<boolean>(false);
+  const loadingItemRef: any = useRef([]);
 
   useEffect(() => {
     const collectionRef = collection(db, 'users', user.user.uid, 'favorite');
@@ -49,26 +54,37 @@ const Favorite: NextPage = () => {
     deleteDoc(doc(db, 'users', user.user.uid, 'favorite', targetId));
   };
 
+  useEffect(() => {
+    products.forEach((_: any, i: number) => {
+      loadingItemRef.current[i] = createRef();
+    });
+    setIsReady(true);
+  }, [products]);
+  useEffect(() => {
+    if (isReady) {
+      if (pageLoading === 'default' || pageLoading === 'complete') {
+        loading(loadingItemRef.current, pageLoading);
+        setIsReady(false);
+      }
+    }
+  }, [pageLoading, isReady]);
+
   return (
     <>
       <main className="inner">
-        <div className="hero--lower">
-          <h2 className="c-title--lower">
-            <span className="heading">お気に入り商品</span>
-            <span className="cate en">Favorite Product</span>
-          </h2>
-        </div>
+        <PageTitle ja={'お気に入り商品'} en={'Favorite Product'} />
         <section className="l-products c-pb">
           {products.length !== 0 ? (
             <>
               <ul className="products">
-                {products.map((product: any) => {
+                {products.map((product: any, i: number) => {
                   return (
-                    <li className="productsItem" key={product.id}>
+                    <li className="productsItem loading" key={product.id} ref={loadingItemRef.current[i]}>
                       <span
                         className="deleteIcon"
                         onClick={() => {
                           deleteFavoriteProduct(product.id);
+                          loadingItemRef.current = []
                         }}
                       >
                         <img src="img/delete.svg" alt="" />

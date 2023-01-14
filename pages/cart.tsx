@@ -57,12 +57,12 @@ const Cart: NextPage = () => {
 
   // 商品画像のスケルトンスクリーン
   useEffect(() => {
-    if (!cartDetails) return;
-    Object.entries(cartDetails).forEach((_: any, i: number) => {
+    if(cartCount === 0)  return;
+    Array.from(Array(cartCount).keys()).forEach((_: any, i: number) => {
       loadingItemRef.current[i] = createRef();
     });
     setIsReady(true);
-  }, [cartDetails]);
+  }, [cartCount,pageLoading]);
 
   useEffect(() => {
     if (isReady) {

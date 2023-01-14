@@ -53,7 +53,7 @@ const Favorite: NextPage = () => {
   const deleteFavoriteProduct = (targetId: any) => {
     deleteDoc(doc(db, 'users', user.user.uid, 'favorite', targetId));
   };
-
+  // 商品画像のスケルトンスクリーン
   useEffect(() => {
     products.forEach((_: any, i: number) => {
       loadingItemRef.current[i] = createRef();
